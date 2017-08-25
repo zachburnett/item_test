@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>hello and welcome {{request.session.username}}</h1>&nbsp; <a href="/item/add_item">add item</a>&nbsp; |&nbsp; <a href="/item/logout">logout</a><br>
+    <br>
+
+
+
+    <h2><strong>My wish list</strong></h2>
+    <table>
+        <tr>
+            <th>item</th>
+            <th>added by</th>
+            <th>dated added</th>
+            <th>actions</th>
+            
+        </tr>
+        {%for z in wishlist%}
+        
+        <tr>
+            <td>{{z.thing}}</td>
+            <td>{{z.added_by.username}}</td>
+            <td>{{z.created_at}}</td>
+            <td><a href="/item/remove/{{z.id}}/{{request.session.user_id}}">remove</a>&nbsp;|&nbsp;<a href="/item/delete/{{z.id}}/{{request.session.user_id}}">delete</a></td>
+        </tr>
+        
+        {%endfor%}
+    </table>
+
+    <h1><strong>other peoples wish list</strong></h1>
+    <table>
+        <tr>
+            <th>item</th>
+            <th>added by</th>
+            <th>dated added</th>
+            <th>actions</th>
+        </tr>
+        {%for x in items%}{%if not x in item.added_by.all%}
+        <tr>
+            <td><a href="/item/showall/{{x.id}}"> {{x.thing}}</a></td>
+            <td>{{x.added_by.username}}</td>
+            <td>{{x.created_at}}</td>
+            <td><a href="/item/add/{{x.id}}/{{request.session.user_id}}">add to my list</a></td>
+
+        </tr>
+        {%endif%}
+        {%endfor%}
+
+
+    </table>
+</body>
+
+</html>
